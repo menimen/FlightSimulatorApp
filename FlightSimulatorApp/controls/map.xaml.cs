@@ -17,7 +17,7 @@ using System.Windows.Shapes;
 namespace FlightSimulatorApp.controls
 {
     /// <summary>
-    /// Interaction logic for map.xaml
+    /// Interaction logic for map.xaml.
     /// </summary>
     public partial class map : UserControl
     {

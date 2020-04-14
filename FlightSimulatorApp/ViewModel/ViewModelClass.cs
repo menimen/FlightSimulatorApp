@@ -17,17 +17,12 @@ namespace FlightSimulatorApp.ViewModel
         public event PropertyChangedEventHandler PropertyChanged;
         public void NotifyPropertyChanged(string propName)
         {
-            /*var handler = PropertyChanged;
-            if(handler!=null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }*/
             if (PropertyChanged != null)
             {
                 PropertyChanged(this, new PropertyChangedEventArgs(propName));
             }
         }
-        /********************************** related to Main Window */
+        /********************************** Related to Main Window. */
         public string VM_ConnectionStatus => model.ConnectionStatus;
         public bool VM_IsConnected => model.IsConnected;
         public bool VM_IsDisconnected => model.IsDisconnected;
@@ -37,7 +32,7 @@ namespace FlightSimulatorApp.ViewModel
             model.disconnect();
         }
 
-        /********************************* related to dashboard*/
+        /********************************* Related to dashboard.*/
         public ViewModelClass(ISimApp simApp)
         {
             model = simApp;
@@ -80,7 +75,7 @@ namespace FlightSimulatorApp.ViewModel
         /**************************************************/
 
 
-        /*********************************************this belongs to Joystick*/
+        /*********************************************This belongs to Joystick.*/
         private string VM_aileron;
         public string VM_Aileron
         {
@@ -124,41 +119,13 @@ namespace FlightSimulatorApp.ViewModel
 
         /*****************************************/
 
-        /************************ this belongs to map*/
-        /*private double longtitude;
-        public double VM_Longtitude_deg
-        {
-            get
-            {
-                return model.Longitude_deg;
-            }
-            set
-            {
-                location.Longitude = value;
-            }
-        }
-        public double VM_Latitude_deg
-        {
-            get
-            {
-                return model.Latitude_deg;
-            }
-            set
-            {
-                
-                location.Latitude = value;
-            }
-        }
-        private Location location;*/
+        /************************ This belongs to map.*/
         public string VM_Locations
         {
             get
             {
                 if (model.ConnectionStatus == "Connected")
                 {
-
-
-                    // Console.WriteLine(model.Locations);
                     double latitude_double_val = 0;
                     bool can_parse_to_double = Double.TryParse(model.Latitude_deg, out latitude_double_val);
                     if (can_parse_to_double == true)

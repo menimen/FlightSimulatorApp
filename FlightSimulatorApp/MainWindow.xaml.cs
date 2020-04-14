@@ -20,66 +20,43 @@ using System.Windows.Shapes;
 namespace FlightSimulatorApp
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for MainWindow.xaml.
     /// </summary>
     public partial class MainWindow : Window
     {
         private ViewModelClass vm;
         public MainWindow()
         {
-            
+
             vm = new ViewModelClass(new MySimApp(new MytelnetClient()));
             this.DataContext = vm;
             InitializeComponent();
-
-            //this.JoystickVM = new VM_Joystick(new MySimApp(new MytelnetClient()));
         }
-        public ViewModelClass getVM() 
+        public ViewModelClass getVM()
         {
             return this.vm;
         }
 
-        private void connect_Click(object sender, RoutedEventArgs e)
+        private void connect_Click(object sender, RoutedEventArgs e)  //Event for click on connect button.
         {
             StackPanelFixed_SP.Children.Clear();
             UserControl1 UC1 = new UserControl1();
             StackPanelFixed_SP.Children.Add(UC1);
             UC1.Visibility = System.Windows.Visibility.Visible;
             UC1.Status = vm;
-            
+
         }
 
-        private void disconnect_Click(object sender, RoutedEventArgs e)
+        private void disconnect_Click(object sender, RoutedEventArgs e) //Event for click on disconnect button.
         {
             joystick.Aileron_value.Value = 0;
             joystick.Throttle_value.Value = 0;
             vm.disconnect();
-            /*disconnect.IsChecked = false;
-            disconnect.IsEnabled = false;
-            connect.IsChecked = true;
-            connect.IsEnabled = true;*/
         }
 
         private void dashboard_Loaded(object sender, RoutedEventArgs e)
         {
 
         }
-
-        /*private void disconnect_Checked(object sender, RoutedEventArgs e) //toggle button - if there wansnt attempt to connect yet, this button will be grey and not clickable
-        {
-            if((sender as ToggleButton).IsChecked == false)
-            {
-                
-                if(ConnectionStatus.Text == "Connected")
-                {
-                    disconnect.IsChecked = true;
-                    disconnect.IsEnabled = true;
-                }
-            } else
-            {
-                disconnect.IsChecked = false;
-                disconnect.IsEnabled = false;
-            }
-        }*/
     }
 }

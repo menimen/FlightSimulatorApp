@@ -18,7 +18,7 @@ using System.Windows.Shapes;
 namespace FlightSimulatorApp.controls
 {
     /// <summary>
-    /// Interaction logic for Dashboard.xaml
+    /// Interaction logic for Dashboard.xaml.
     /// </summary>
     public partial class Dashboard : UserControl
     {
@@ -27,8 +27,6 @@ namespace FlightSimulatorApp.controls
         {
             InitializeComponent();
             vm = (ViewModelClass)this.DataContext;
-            //DataContext = Status;
-            //DataContext = new VM_Dashboard(new MySimApp(new MytelnetClient()));
         }
         public ViewModelClass Status { get; set; }
     }
