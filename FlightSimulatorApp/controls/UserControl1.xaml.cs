@@ -40,8 +40,10 @@ namespace FlightSimulatorApp.controls
             }
             if (passed_In_valid_Port)
             {
-                Status.connect(ip, port);
-                MainWindow mainWind = Application.Current.MainWindow as MainWindow;     
+                MainWindow mainWind = Application.Current.MainWindow as MainWindow;
+                mainWind.joystick.Aileron_value.Value = 0;
+                mainWind.joystick.Throttle_value.Value = 0;
+                Status.connect(ip, port);     
                 mainWind.StackPanelFixed_SP.Children.RemoveAt(0);
             }
         }
@@ -49,6 +51,8 @@ namespace FlightSimulatorApp.controls
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
             MainWindow mainWind = Application.Current.MainWindow as MainWindow;
+            mainWind.joystick.Aileron_value.Value = 0;
+            mainWind.joystick.Throttle_value.Value = 0;
             mainWind.StackPanelFixed_SP.Children.RemoveAt(0);
         }
     }
