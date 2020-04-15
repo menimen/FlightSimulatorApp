@@ -18,6 +18,7 @@ namespace FlightSimulatorApp.controls
         ViewModelClass _vm;
         private Point knobLocation;
         private Storyboard sb;
+        private Point Joystickpoint;
         public Joystick()
         {
             InitializeComponent();
@@ -26,6 +27,7 @@ namespace FlightSimulatorApp.controls
             sb.Stop();
             //_vm = ((MainWindow)Application.Current.MainWindow).getVM();
             _vm = (ViewModelClass)this.DataContext;
+            Joystickpoint = new Point(0, 0);
             //DataContext = _vm;
             
         }
@@ -58,6 +60,8 @@ namespace FlightSimulatorApp.controls
             _vm.FlyPlane(0, 0);
             UIElement element = (UIElement)Knob;
             element.ReleaseMouseCapture();
+            yosi.Text = 0.ToString();
+            yoso.Text = 0.ToString();
         }
         private void Knob_MouseMove(object sender, MouseEventArgs e)
         {
@@ -123,6 +127,8 @@ namespace FlightSimulatorApp.controls
                 Window parentWin = Window.GetWindow(this);
                 _vm = ((MainWindow)Application.Current.MainWindow).getVM();
                 /// the values to send to simulator, the joystick range is between -1 to 1 when the horizontal to the right take value 1 and most vertical up takes vlaue 1
+                yosi.Text = (knobPosition.X / (Base.Width / 2)).ToString();
+                yoso.Text = (knobPosition.Y / (Base.Height / -2)).ToString();
                 _vm.FlyPlane(knobPosition.X / (Base.Width / 2), knobPosition.Y / (Base.Height / -2));
 
             }
