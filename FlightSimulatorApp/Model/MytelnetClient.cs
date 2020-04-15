@@ -21,11 +21,9 @@ namespace FlightSimulatorApp.Model
             {
                 client = new TcpClient(ip, port);
                 // Get a client stream for reading and writing.
-                //  Stream stream = client.GetStream();
                 stream = client.GetStream();
                 stream.ReadTimeout = 10000;
-
-                // FINISHED CONNECTION
+                // FINISHED CONNECTION.
             }
             catch (Exception)
             {
@@ -44,7 +42,6 @@ namespace FlightSimulatorApp.Model
             {
                 return true;
             }
-            
         }
         public void disconnect()
         {
@@ -81,15 +78,15 @@ namespace FlightSimulatorApp.Model
 
         public string read(string value)
         {
-            
-            if (client != null) 
+
+            if (client != null)
             {
                 Byte[] data = new Byte[256];
                 // String to store the response ASCII representation.
                 String responseData = String.Empty;
                 try
                 {
-                    // Read the first batch of the TcpServer response bytes
+                    // Read the first batch of the TcpServer response bytes.
                     int bytes = stream.Read(data, 0, data.Length);
                     responseData = System.Text.Encoding.ASCII.GetString(data, 0, bytes);
                     return responseData;
@@ -98,16 +95,16 @@ namespace FlightSimulatorApp.Model
                 {
                     if (checkConnectionStatus())
                     {
+                        //There has been sudden disconnection problems with simulator. 
                         Console.WriteLine("Connection problems with Server.");
                         // diconnect
                         throw e;
                     }
                     else
                     {
+                        //In case we didnt get the request value  from simulator after timeout, then we ignore and preceed forward
                         return value;
-                       
                     }
-
                 }
             }
             else
@@ -116,7 +113,5 @@ namespace FlightSimulatorApp.Model
                 return "";
             }
         }
-
-
     }
 }
