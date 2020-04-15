@@ -54,7 +54,37 @@
                 <TextBlock Background="White" HorizontalAlignment="Left" Margin="103,397,-0.2,0" TextWrapping="Wrap" Text="Throttle" VerticalAlignment="Top" Width="42" RenderTransformOrigin="-0.067,-1.737"></TextBlock>
                 <TextBox HorizontalAlignment="Left" Height="23" Margin="59,27,0,0" TextWrapping="Wrap" Text="{Binding ElementName=Aileron_value, Path=Value, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="39"/>
             </Grid>
-            <Canvas  x:Name="Base" Width="340" Height="340">
+            <Canvas VerticalAlignment="Bottom">
+                <TextBlock Canvas.Top="-100" Width="100" Height="25" Canvas.Left="200" Text="Rudder" FontSize="14" TextAlignment="Center" Foreground="White">
+                    <TextBlock.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black" Offset="0"/>
+                            <GradientStop Color="#FF9B9B9B" Offset="1"/>
+                        </LinearGradientBrush>
+                    </TextBlock.Background></TextBlock>
+                <TextBlock Canvas.Left="25" Canvas.Top="-100" Width="100" Height="25" Text="Elevator" FontSize="14" TextAlignment="Center" Foreground="White">
+                    <TextBlock.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black" Offset="0"/>
+                            <GradientStop Color="#FF9B9B9B" Offset="1"/>
+                        </LinearGradientBrush>
+                    </TextBlock.Background></TextBlock>
+                <TextBlock Width="135" Canvas.Left="5" Canvas.Top="-72" Height="49" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center" Foreground="White">
+                    <TextBlock.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black" Offset="0"/>
+                            <GradientStop Color="#FFE1E1E1" Offset="1"/>
+                        </LinearGradientBrush>
+                    </TextBlock.Background><Run Text="high" FontSize="15"/></TextBlock>
+                <TextBlock Width="135" Canvas.Left="180" Canvas.Top="-72"  Height="49" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center" Foreground="White">
+                    <TextBlock.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                            <GradientStop Color="Black" Offset="0"/>
+                            <GradientStop Color="#FFE1E1E1" Offset="1"/>
+                        </LinearGradientBrush>
+                    </TextBlock.Background><Run Text="very high" FontSize="15"/></TextBlock>
+            </Canvas>
+            <Canvas  x:Name="Base" Width="340" Height="340" VerticalAlignment="Top">
                 <Ellipse HorizontalAlignment="Left" Height="340" VerticalAlignment="Top" Width="340">
                     <Ellipse.Fill>
                         <RadialGradientBrush>

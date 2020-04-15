@@ -27,7 +27,7 @@ namespace FlightSimulatorApp
         private ViewModelClass vm;
         public MainWindow()
         {
-            
+            WindowState = WindowState.Maximized;
             vm = new ViewModelClass(new MySimApp(new MytelnetClient()));
             this.DataContext = vm;
             InitializeComponent();

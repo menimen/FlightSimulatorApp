@@ -36,7 +36,15 @@ namespace FlightSimulatorApp.Model
         public bool checkConnectionStatus()
         {
             // return false when connected
-            return !this.client.Connected;
+         if (client != null)
+            {
+                return !this.client.Connected;
+            }
+         else
+            {
+                return true;
+            }
+            
         }
         public void disconnect()
         {
