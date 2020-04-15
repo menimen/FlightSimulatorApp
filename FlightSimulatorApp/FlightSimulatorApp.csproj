@@ -136,5 +136,8 @@
   <ItemGroup>
     <Resource Include="controls\plane.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="notes for tester.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
