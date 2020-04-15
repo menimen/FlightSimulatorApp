@@ -69,20 +69,20 @@
                             <GradientStop Color="#FF9B9B9B" Offset="1"/>
                         </LinearGradientBrush>
                     </TextBlock.Background></TextBlock>
-                <TextBlock Width="135" Canvas.Left="5" Canvas.Top="-72" Height="49" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center" Foreground="White">
+                <TextBlock Width="135" Name="yosi" Text="0" Canvas.Left="5" Canvas.Top="-72" Height="49" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center" Foreground="White">
                     <TextBlock.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="Black" Offset="0"/>
                             <GradientStop Color="#FFE1E1E1" Offset="1"/>
                         </LinearGradientBrush>
-                    </TextBlock.Background><Run Text="high" FontSize="15"/></TextBlock>
-                <TextBlock Width="135" Canvas.Left="180" Canvas.Top="-72"  Height="49" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center" Foreground="White">
+                    </TextBlock.Background></TextBlock>
+                <TextBlock Width="135" Name="yoso" Text="0" Canvas.Left="180" Canvas.Top="-72"  Height="49" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center" Foreground="White">
                     <TextBlock.Background>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                             <GradientStop Color="Black" Offset="0"/>
                             <GradientStop Color="#FFE1E1E1" Offset="1"/>
                         </LinearGradientBrush>
-                    </TextBlock.Background><Run Text="very high" FontSize="15"/></TextBlock>
+                    </TextBlock.Background></TextBlock>
             </Canvas>
             <Canvas  x:Name="Base" Width="340" Height="340" VerticalAlignment="Top">
                 <Ellipse HorizontalAlignment="Left" Height="340" VerticalAlignment="Top" Width="340">
