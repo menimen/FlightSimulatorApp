@@ -33,6 +33,8 @@ namespace FlightSimulatorApp.Model
         private string longitude_deg; //logtitude of the plane
         private string aileron;
         private string throttle;
+        private string rudder;
+        private string elevator;
         private string connectionStatus = "Disconnected";
         private bool isconnected = false;
         private bool isdisconnected = true;
@@ -72,6 +74,33 @@ namespace FlightSimulatorApp.Model
                 this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
             }
         }
+
+        public string Rudder
+        {
+            get
+            {
+                return this.rudder;
+            }
+            set
+            {
+                this.rudder = value;
+                NotifyPropertyChanged("Rudder");
+            }
+        }
+        public string Elevator
+        {
+            get
+            {
+                return this.elevator;
+            }
+            set
+            {
+                this.elevator = value;
+                NotifyPropertyChanged("Elevator");
+            }
+        }
+
+
         private string locations;
         public string Aileron
         {
@@ -353,19 +382,21 @@ namespace FlightSimulatorApp.Model
                 StringBuilder sb = new StringBuilder(this.var_locations_in_simulator_send[2] + " " + elevator + "\n"); //Build the command to set the elevator value in sim.
                 string elevatorCommand = sb.ToString();
                 this._telnetClient.write(elevatorCommand);
+                Console.WriteLine("elevator:" + elevatorCommand);
                 _telnetClient.read("");
                 sb = new StringBuilder(this.var_locations_in_simulator_send[1] + " " + rudder + "\n"); //Build the command to set the rudder value in sim.
                 string rudderCommand = sb.ToString();
                 this._telnetClient.write(rudderCommand);
                 Console.WriteLine("elevator:" + elevatorCommand);
                 Console.WriteLine("rudder" + rudderCommand);
+                Console.WriteLine("rudder"+rudderCommand);
                 _telnetClient.read("");
                 m.ReleaseMutex();
             }
             catch (Exception)
             {
                 m.ReleaseMutex();
-                Console.WriteLine("problem with thread2");
+                Console.WriteLine("problem with thread");
                 Console.WriteLine("could not send joystick values to simulator ");
             }
         }
