@@ -127,8 +127,8 @@ namespace FlightSimulatorApp.controls
                 Window parentWin = Window.GetWindow(this);
                 _vm = ((MainWindow)Application.Current.MainWindow).getVM();
                 /// the values to send to simulator, the joystick range is between -1 to 1 when the horizontal to the right take value 1 and most vertical up takes vlaue 1
-                yosi.Text = (knobPosition.X / (Base.Width / 2)).ToString();
-                yoso.Text = (knobPosition.Y / (Base.Height / -2)).ToString();
+                yoso.Text = (knobPosition.X / (Base.Width / 2)).ToString();
+                yosi.Text = (knobPosition.Y / (Base.Height / -2)).ToString();
                 _vm.FlyPlane(knobPosition.X / (Base.Width / 2), knobPosition.Y / (Base.Height / -2));
 
             }
