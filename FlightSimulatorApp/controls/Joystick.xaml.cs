@@ -82,53 +82,68 @@ namespace FlightSimulatorApp.controls
                 {
                     //linear equation to calculate point at radious on same line.
                     slope = y / x;
-                    absX = Math.Sqrt(Math.Pow(Base.Width / 2, 2) / (Math.Pow(slope, 2) + 1));
-                    absY = absX * slope;
-                    if (x > 0)
-                    {
-                        knobPosition.X = absX;
-                    }
-                    else if (x < 0)
-                    {
-                        knobPosition.X = -absX;
-                    }
-                    else
+                    if (Double.IsInfinity(slope))
                     {
                         knobPosition.X = 0;
-                    }
-                    if (y > 0)
-                    {
-                        if (x > 0)
+                        if (slope < 0)
                         {
-                            knobPosition.Y = absY;
+                            knobPosition.Y = Base.Height / -2;
                         }
                         else
                         {
-                            knobPosition.Y = -absY;
-                        }
-                    }
-                    else if (y < 0)
-                    {
-                        if (x < 0)
-                        {
-                            knobPosition.Y = -absY;
-                        }
-                        else
-                        {
-                            knobPosition.Y = absY;
+                            knobPosition.Y = Base.Height / 2;
                         }
                     }
                     else
                     {
-                        knobPosition.Y = 0;
+                        absX = Math.Sqrt(Math.Pow(Base.Width / 2, 2) / (Math.Pow(slope, 2) + 1));
+                        absY = absX * slope;
+                        if (x > 0)
+                        {
+                            knobPosition.X = absX;
+                        }
+                        else if (x < 0)
+                        {
+                            knobPosition.X = -absX;
+                        }
+                        else
+                        {
+                            knobPosition.X = 0;
+                        }
+                        if (y > 0)
+                        {
+                            if (x > 0)
+                            {
+                                knobPosition.Y = absY;
+                            }
+                            else
+                            {
+                                knobPosition.Y = -absY;
+                            }
+                        }
+                        else if (y < 0)
+                        {
+                            if (x < 0)
+                            {
+                                knobPosition.Y = -absY;
+                            }
+                            else
+                            {
+                                knobPosition.Y = absY;
+                            }
+                        }
+                        else
+                        {
+                            knobPosition.Y = 0;
+                        }
                     }
                 }
 
                 Window parentWin = Window.GetWindow(this);
                 _vm = ((MainWindow)Application.Current.MainWindow).getVM();
                 /// the values to send to simulator, the joystick range is between -1 to 1 when the horizontal to the right take value 1 and most vertical up takes vlaue 1
-                yosi.Text = (knobPosition.X / (Base.Width / 2)).ToString();
-                yoso.Text = (knobPosition.Y / (Base.Height / -2)).ToString();
+                yoso.Text = (knobPosition.X / (Base.Width / 2)).ToString();
+                yosi.Text = (knobPosition.Y / (Base.Height / -2)).ToString();
                 _vm.FlyPlane(knobPosition.X / (Base.Width / 2), knobPosition.Y / (Base.Height / -2));
 
             }
