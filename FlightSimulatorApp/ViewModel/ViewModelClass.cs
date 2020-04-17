@@ -88,7 +88,7 @@ namespace FlightSimulatorApp.ViewModel
                 VM_aileron = value;
                 if (this.VM_ConnectionStatus == "Connected")
                 {
-                    model.moveAileron(VM_aileron.ToString());
+                    model.addQueue("set /controls/flight/aileron " + VM_aileron.ToString() + "\n");
                 }
             }
         }
@@ -108,13 +108,15 @@ namespace FlightSimulatorApp.ViewModel
                 VM_throttle = value;
                 if (this.VM_ConnectionStatus == "Connected")
                 {
-                    model.moveThrottle(VM_throttle);
+                    model.addQueue("set /controls/engines/current-engine/throttle " + VM_throttle.ToString() + "\n");
                 }
             }
         }
         public void FlyPlane(double rudder, double elevator)
         {
-            model.FlyPlane(rudder, elevator);
+            //model.FlyPlane(rudder, elevator);
+            model.addQueue("set /controls/flight/elevator " + elevator.ToString() + "\n");
+            model.addQueue("set /controls/flight/rudder " + rudder.ToString() + "\n");
         }
 
         /*****************************************/

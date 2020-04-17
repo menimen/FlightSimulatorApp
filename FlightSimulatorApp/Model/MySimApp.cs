@@ -38,6 +38,7 @@ namespace FlightSimulatorApp.Model
         private string connectionStatus = "Disconnected";
         private bool isconnected = false;
         private bool isdisconnected = true;
+        public Queue<string> commandsToSendToSimulator = new Queue<string>();
 
 
         ItelnetClient _telnetClient;
@@ -64,6 +65,7 @@ namespace FlightSimulatorApp.Model
             thresholdValuestoThrottleandAileron.Add("max_dashboard_val", this.max_dashboard_val);
 
             temp = new Dictionary<string, object>(CodeMapsend);
+            start2();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -594,6 +596,38 @@ namespace FlightSimulatorApp.Model
                     Thread.Sleep(250); // Read data in 4Hz.
                 }
             }).Start();
+        }
+        private void start2()
+        {
+            new Thread(delegate ()
+            {
+                while (!stop)
+                {
+                    try
+                    {
+                        m.WaitOne();
+                        string curCommand = "";
+                        if (this.ConnectionStatus != "Disconnected")
+                        {
+                            while (commandsToSendToSimulator.Count != 0)
+                            {
+                                curCommand = commandsToSendToSimulator.Dequeue();
+                                _telnetClient.write(curCommand);
+                                _telnetClient.read("");
+                            }
+                        }
+                        m.ReleaseMutex();
+                    }
+                    catch (Exception)
+                    {
+                        m.ReleaseMutex();
+                    }
+                }
+            }).Start();
+        }
+        public void addQueue(string Command)
+        {
+            this.commandsToSendToSimulator.Enqueue(Command);
         }
         public void restorebackTo()
         { // This function restores the value to default value "ERR", in case the client is disconnected from simulator.
