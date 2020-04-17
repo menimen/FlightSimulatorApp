@@ -32,5 +32,7 @@ namespace FlightSimulatorApp.Model
         string ConnectionStatus { get; set; }
         bool IsConnected { get; set; }
         bool IsDisconnected { get; set; }
+        void addQueue(string Command);
+
     }
 }
