@@ -65,7 +65,6 @@ namespace FlightSimulatorApp.Model
             thresholdValuestoThrottleandAileron.Add("max_dashboard_val", this.max_dashboard_val);
 
             temp = new Dictionary<string, object>(CodeMapsend);
-            Start2();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -354,6 +353,8 @@ namespace FlightSimulatorApp.Model
                     this.IsConnected = true;
                     this.stop = false;
                     this.Start();
+                    this.Start2();
+
                 }
             }
             catch (Exception)
@@ -375,72 +376,6 @@ namespace FlightSimulatorApp.Model
             this.IsConnected = false;
             this.RestorebackTo();
             this.commandsToSendToSimulator.Clear();
-        }
-        public void FlyPlane(double rudder, double elevator)
-        {
-            try
-            {
-                m.WaitOne();
-                StringBuilder sb = new StringBuilder(this.var_locations_in_simulator_send[2] + " " + elevator + "\n"); //Build the command to set the elevator value in sim.
-                string elevatorCommand = sb.ToString();
-                this._telnetClient.Write(elevatorCommand);
-                Console.WriteLine("elevator:" + elevatorCommand);
-                _telnetClient.Read("");
-                sb = new StringBuilder(this.var_locations_in_simulator_send[1] + " " + rudder + "\n"); //Build the command to set the rudder value in sim.
-                string rudderCommand = sb.ToString();
-                this._telnetClient.Write(rudderCommand);
-                Console.WriteLine("elevator:" + elevatorCommand);
-                Console.WriteLine("rudder" + rudderCommand);
-                Console.WriteLine("rudder"+rudderCommand);
-                _telnetClient.Read("");
-                m.ReleaseMutex();
-            }
-            catch (Exception)
-            {
-                m.ReleaseMutex();
-                Console.WriteLine("problem with thread");
-                Console.WriteLine("could not send joystick values to simulator ");
-            }
-        }
-
-        public void MoveAileron(string aileron)
-        {
-            try
-            {
-                m.WaitOne();
-                StringBuilder sb = new StringBuilder(this.var_locations_in_simulator_send[3] + " " + aileron + "\n"); //Build the command to set the aileron value in sim.
-                string aileronCommand = sb.ToString();
-                this._telnetClient.Write(aileronCommand);
-                Console.WriteLine(aileronCommand);
-                _telnetClient.Read("");
-                m.ReleaseMutex();
-            }
-            catch (Exception)
-            {
-                m.ReleaseMutex();
-                Console.WriteLine("problem with thread2");
-                Console.WriteLine("could not send joystick values to simulator ");
-            }
-        }
-
-        public void MoveThrottle(double throttle)
-        {
-            try
-            {
-                m.WaitOne();
-                StringBuilder sb = new StringBuilder(this.var_locations_in_simulator_send[0] + " " + throttle + "\n"); //Build the command to set the aileron value in sim.
-                string throttleCommand = sb.ToString();
-                this._telnetClient.Write(throttleCommand);
-                Console.WriteLine(throttleCommand);
-                _telnetClient.Read("");
-                m.ReleaseMutex();
-            }
-            catch (Exception)
-            {
-                m.ReleaseMutex();
-                Console.WriteLine("problem with thread2");
-                Console.WriteLine("could not send joystick values to simulator ");
-            }
         }
 
         public void Start()
@@ -611,6 +546,7 @@ namespace FlightSimulatorApp.Model
                         {
                             while (commandsToSendToSimulator.Count != 0)
                             {
+                               
                                 curCommand = commandsToSendToSimulator.Dequeue();
                                 _telnetClient.Write(curCommand);
                                 _telnetClient.Read("");
@@ -621,7 +557,15 @@ namespace FlightSimulatorApp.Model
                     catch (Exception)
                     {
                         m.ReleaseMutex();
+                        Console.WriteLine("an unexpected problem as occured");
+                        if (this._telnetClient.CheckConnectionStatus())
+                        {
+                            Disconnect();
+                            // We need to click on the disconnect button.
+                            Console.WriteLine("client has Disconnected from Server due to Connection problem with Server.");
+                        }
                     }
+                    Thread.Sleep(250); // Read data in 4Hz.
                 }
             }).Start();
         }
