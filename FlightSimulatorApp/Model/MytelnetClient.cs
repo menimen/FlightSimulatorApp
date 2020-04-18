@@ -15,7 +15,7 @@ namespace FlightSimulatorApp.Model
         NetworkStream stream;
         private readonly object balanceLock = new object();
         private readonly object balanceLock2 = new object();
-        public void connect(string ip, int port)
+        public void Connect(string ip, int port)
         {
             try
             {
@@ -31,7 +31,7 @@ namespace FlightSimulatorApp.Model
                 this.client = null;
             }
         }
-        public bool checkConnectionStatus()
+        public bool CheckConnectionStatus()
         {
             // return false when connected
          if (client != null)
@@ -43,7 +43,7 @@ namespace FlightSimulatorApp.Model
                 return true;
             }
         }
-        public void disconnect()
+        public void Disconnect()
         {
             try
             {
@@ -58,7 +58,7 @@ namespace FlightSimulatorApp.Model
 
         }
 
-        public void write(string command)
+        public void Write(string command)
         {
 
             if (client != null)
@@ -76,7 +76,7 @@ namespace FlightSimulatorApp.Model
 
         }
 
-        public string read(string value)
+        public string Read(string value)
         {
 
             if (client != null)
@@ -93,7 +93,7 @@ namespace FlightSimulatorApp.Model
                 }
                 catch (Exception e)
                 {
-                    if (checkConnectionStatus())
+                    if (CheckConnectionStatus())
                     {
                         //There has been sudden disconnection problems with simulator. 
                         Console.WriteLine("Connection problems with Server.");

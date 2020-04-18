@@ -49,7 +49,7 @@ namespace FlightSimulatorApp.Model
             this._telnetClient = telnetClient;
             stop = false;
             CodeMapsend = new Dictionary<string, object>();
-            this.restorebackTo();
+            this.RestorebackTo();
             CodeMapsend.Add("get /instrumentation/heading-indicator/indicated-heading-deg\n", this.Indicated_heading_deg);
             CodeMapsend.Add("get /instrumentation/gps/indicated-vertical-speed\n", this.Gps_indicated_vertical_speed);
             CodeMapsend.Add("get /instrumentation/gps/indicated-ground-speed-kt\n", this.Gps_indicated_ground_speed_kt);
@@ -65,7 +65,7 @@ namespace FlightSimulatorApp.Model
             thresholdValuestoThrottleandAileron.Add("max_dashboard_val", this.max_dashboard_val);
 
             temp = new Dictionary<string, object>(CodeMapsend);
-            start2();
+            Start2();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -316,7 +316,7 @@ namespace FlightSimulatorApp.Model
         public double Max_dashboard_val => this.max_dashboard_val;
 
 
-        public string checkThreshold_For_Dashboard_vars(string val)
+        public string CheckThreshold_For_Dashboard_vars(string val)
         {
             string double_STR_To_Send;
             double STR_to_double = Double.Parse(val);
@@ -342,18 +342,18 @@ namespace FlightSimulatorApp.Model
 
         /**********************************/
 
-        public void connect(string ip, int port)
+        public void Connect(string ip, int port)
         {
             try
             {
-                _telnetClient.connect(ip, port);
-                if (!_telnetClient.checkConnectionStatus())
+                _telnetClient.Connect(ip, port);
+                if (!_telnetClient.CheckConnectionStatus())
                 {
                     this.ConnectionStatus = "Connected";
                     this.IsDisconnected = false;
                     this.IsConnected = true;
                     this.stop = false;
-                    this.start();
+                    this.Start();
                 }
             }
             catch (Exception)
@@ -363,18 +363,18 @@ namespace FlightSimulatorApp.Model
                 this.IsConnected = false;
             }
         }
-        public void disconnect()
+        public void Disconnect()
         {
 
             stop = true;
-            _telnetClient.disconnect();
+            _telnetClient.Disconnect();
             this.throttle = 0.ToString();
             this.aileron = 0.ToString();
             this.ConnectionStatus = "Disconnected";
             this.IsDisconnected = true;
             this.IsConnected = false;
-            this.restorebackTo();
-
+            this.RestorebackTo();
+            this.commandsToSendToSimulator.Clear();
         }
         public void FlyPlane(double rudder, double elevator)
         {
@@ -383,16 +383,16 @@ namespace FlightSimulatorApp.Model
                 m.WaitOne();
                 StringBuilder sb = new StringBuilder(this.var_locations_in_simulator_send[2] + " " + elevator + "\n"); //Build the command to set the elevator value in sim.
                 string elevatorCommand = sb.ToString();
-                this._telnetClient.write(elevatorCommand);
+                this._telnetClient.Write(elevatorCommand);
                 Console.WriteLine("elevator:" + elevatorCommand);
-                _telnetClient.read("");
+                _telnetClient.Read("");
                 sb = new StringBuilder(this.var_locations_in_simulator_send[1] + " " + rudder + "\n"); //Build the command to set the rudder value in sim.
                 string rudderCommand = sb.ToString();
-                this._telnetClient.write(rudderCommand);
+                this._telnetClient.Write(rudderCommand);
                 Console.WriteLine("elevator:" + elevatorCommand);
                 Console.WriteLine("rudder" + rudderCommand);
                 Console.WriteLine("rudder"+rudderCommand);
-                _telnetClient.read("");
+                _telnetClient.Read("");
                 m.ReleaseMutex();
             }
             catch (Exception)
@@ -403,16 +403,16 @@ namespace FlightSimulatorApp.Model
             }
         }
 
-        public void moveAileron(string aileron)
+        public void MoveAileron(string aileron)
         {
             try
             {
                 m.WaitOne();
                 StringBuilder sb = new StringBuilder(this.var_locations_in_simulator_send[3] + " " + aileron + "\n"); //Build the command to set the aileron value in sim.
                 string aileronCommand = sb.ToString();
-                this._telnetClient.write(aileronCommand);
+                this._telnetClient.Write(aileronCommand);
                 Console.WriteLine(aileronCommand);
-                _telnetClient.read("");
+                _telnetClient.Read("");
                 m.ReleaseMutex();
             }
             catch (Exception)
@@ -423,16 +423,16 @@ namespace FlightSimulatorApp.Model
             }
         }
 
-        public void moveThrottle(double throttle)
+        public void MoveThrottle(double throttle)
         {
             try
             {
                 m.WaitOne();
                 StringBuilder sb = new StringBuilder(this.var_locations_in_simulator_send[0] + " " + throttle + "\n"); //Build the command to set the aileron value in sim.
                 string throttleCommand = sb.ToString();
-                this._telnetClient.write(throttleCommand);
+                this._telnetClient.Write(throttleCommand);
                 Console.WriteLine(throttleCommand);
-                _telnetClient.read("");
+                _telnetClient.Read("");
                 m.ReleaseMutex();
             }
             catch (Exception)
@@ -443,7 +443,7 @@ namespace FlightSimulatorApp.Model
             }
         }
 
-        public void start()
+        public void Start()
         {
 
             new Thread(delegate ()
@@ -458,11 +458,11 @@ namespace FlightSimulatorApp.Model
                             float temp1 = 0;
                             double temp = 0;
 
-                            _telnetClient.write("get /instrumentation/heading-indicator/indicated-heading-deg\n");
-                            if (float.TryParse(_telnetClient.read(this.indicated_heading_deg).ToString(), out temp1))
+                            _telnetClient.Write("get /instrumentation/heading-indicator/indicated-heading-deg\n");
+                            if (float.TryParse(_telnetClient.Read(this.indicated_heading_deg).ToString(), out temp1))
                             {
                                 this.Indicated_heading_deg = temp1.ToString();
-                                this.Indicated_heading_deg = checkThreshold_For_Dashboard_vars(Indicated_heading_deg);
+                                this.Indicated_heading_deg = CheckThreshold_For_Dashboard_vars(Indicated_heading_deg);
                             }
                             else
                             {
@@ -470,11 +470,11 @@ namespace FlightSimulatorApp.Model
                                 Console.WriteLine("there has been an error in parsing proccess of the variable " + this.Indicated_heading_deg + " from simulator");
                             }
 
-                            _telnetClient.write("get /instrumentation/gps/indicated-vertical-speed\n");
-                            if (float.TryParse(_telnetClient.read(this.gps_indicated_vertical_speed).ToString(), out temp1))
+                            _telnetClient.Write("get /instrumentation/gps/indicated-vertical-speed\n");
+                            if (float.TryParse(_telnetClient.Read(this.gps_indicated_vertical_speed).ToString(), out temp1))
                             {
                                 this.Gps_indicated_vertical_speed = temp1.ToString();
-                                this.Gps_indicated_vertical_speed = checkThreshold_For_Dashboard_vars(Gps_indicated_vertical_speed);
+                                this.Gps_indicated_vertical_speed = CheckThreshold_For_Dashboard_vars(Gps_indicated_vertical_speed);
                             }
                             else
                             {
@@ -482,11 +482,11 @@ namespace FlightSimulatorApp.Model
                                 Console.WriteLine("there has been an error in parsing proccess of the variable " + this.Gps_indicated_vertical_speed + " from simulator");
                             }
 
-                            _telnetClient.write("get /instrumentation/gps/indicated-ground-speed-kt\n");
-                            if (float.TryParse(_telnetClient.read(this.gps_indicated_ground_speed_kt).ToString(), out temp1))
+                            _telnetClient.Write("get /instrumentation/gps/indicated-ground-speed-kt\n");
+                            if (float.TryParse(_telnetClient.Read(this.gps_indicated_ground_speed_kt).ToString(), out temp1))
                             {
                                 this.Gps_indicated_ground_speed_kt = temp1.ToString();
-                                this.Gps_indicated_ground_speed_kt = checkThreshold_For_Dashboard_vars(Gps_indicated_ground_speed_kt);
+                                this.Gps_indicated_ground_speed_kt = CheckThreshold_For_Dashboard_vars(Gps_indicated_ground_speed_kt);
                             }
                             else
                             {
@@ -494,11 +494,11 @@ namespace FlightSimulatorApp.Model
                                 Console.WriteLine("there has been an error in parsing proccess of the variable " + this.Gps_indicated_ground_speed_kt + " from simulator");
                             }
 
-                            _telnetClient.write("get /instrumentation/airspeed-indicator/indicated-speed-kt\n");
-                            if (float.TryParse(_telnetClient.read(this.airspeed_indicator_indicated_speed_kt).ToString(), out temp1))
+                            _telnetClient.Write("get /instrumentation/airspeed-indicator/indicated-speed-kt\n");
+                            if (float.TryParse(_telnetClient.Read(this.airspeed_indicator_indicated_speed_kt).ToString(), out temp1))
                             {
                                 this.Airspeed_indicator_indicated_speed_kt = temp1.ToString();
-                                this.Airspeed_indicator_indicated_speed_kt = checkThreshold_For_Dashboard_vars(Airspeed_indicator_indicated_speed_kt);
+                                this.Airspeed_indicator_indicated_speed_kt = CheckThreshold_For_Dashboard_vars(Airspeed_indicator_indicated_speed_kt);
                             }
                             else
                             {
@@ -506,11 +506,11 @@ namespace FlightSimulatorApp.Model
                                 Console.WriteLine("there has been an error in parsing proccess of the variable " + this.Airspeed_indicator_indicated_speed_kt + " from simulator");
                             }
 
-                            _telnetClient.write("get /instrumentation/altimeter/indicated-altitude-ft\n");
-                            if (float.TryParse(_telnetClient.read(this.gps_indicated_altitude_ft).ToString(), out temp1))
+                            _telnetClient.Write("get /instrumentation/altimeter/indicated-altitude-ft\n");
+                            if (float.TryParse(_telnetClient.Read(this.gps_indicated_altitude_ft).ToString(), out temp1))
                             {
                                 this.Gps_indicated_altitude_ft = temp1.ToString();
-                                this.Gps_indicated_altitude_ft = checkThreshold_For_Dashboard_vars(Gps_indicated_altitude_ft);
+                                this.Gps_indicated_altitude_ft = CheckThreshold_For_Dashboard_vars(Gps_indicated_altitude_ft);
                             }
                             else
                             {
@@ -518,11 +518,11 @@ namespace FlightSimulatorApp.Model
                                 Console.WriteLine("there has been an error in parsing proccess of the variable " + this.Gps_indicated_altitude_ft + " from simulator");
                             }
 
-                            _telnetClient.write("get /instrumentation/attitude-indicator/internal-roll-deg\n");
-                            if (float.TryParse(_telnetClient.read(this.attitude_indicator_internal_roll_deg).ToString(), out temp1))
+                            _telnetClient.Write("get /instrumentation/attitude-indicator/internal-roll-deg\n");
+                            if (float.TryParse(_telnetClient.Read(this.attitude_indicator_internal_roll_deg).ToString(), out temp1))
                             {
                                 this.Attitude_indicator_internal_roll_deg = temp1.ToString();
-                                this.Attitude_indicator_internal_roll_deg = checkThreshold_For_Dashboard_vars(Attitude_indicator_internal_roll_deg);
+                                this.Attitude_indicator_internal_roll_deg = CheckThreshold_For_Dashboard_vars(Attitude_indicator_internal_roll_deg);
                             }
                             else
                             {
@@ -530,11 +530,11 @@ namespace FlightSimulatorApp.Model
                                 Console.WriteLine("there has been an error in parsing proccess of the variable " + this.Attitude_indicator_internal_roll_deg + " from simulator");
                             }
 
-                            _telnetClient.write("get /instrumentation/attitude-indicator/internal-pitch-deg\n");
-                            if (float.TryParse(_telnetClient.read(this.attitude_indicator_internal_pitch_deg).ToString(), out temp1))
+                            _telnetClient.Write("get /instrumentation/attitude-indicator/internal-pitch-deg\n");
+                            if (float.TryParse(_telnetClient.Read(this.attitude_indicator_internal_pitch_deg).ToString(), out temp1))
                             {
                                 this.Attitude_indicator_internal_pitch_deg = temp1.ToString();
-                                this.Attitude_indicator_internal_pitch_deg = checkThreshold_For_Dashboard_vars(Attitude_indicator_internal_pitch_deg);
+                                this.Attitude_indicator_internal_pitch_deg = CheckThreshold_For_Dashboard_vars(Attitude_indicator_internal_pitch_deg);
                             }
                             else
                             {
@@ -542,11 +542,11 @@ namespace FlightSimulatorApp.Model
                                 Console.WriteLine("there has been an error in parsing proccess of the variable " + this.Attitude_indicator_internal_pitch_deg + " from simulator");
                             }
 
-                            _telnetClient.write("get /instrumentation/gps/indicated-altitude-ft\n");
-                            if (float.TryParse(_telnetClient.read(this.altimeter_indicated_altitude_ft).ToString(), out temp1))
+                            _telnetClient.Write("get /instrumentation/gps/indicated-altitude-ft\n");
+                            if (float.TryParse(_telnetClient.Read(this.altimeter_indicated_altitude_ft).ToString(), out temp1))
                             {
                                 this.Altimeter_indicated_altitude_ft = temp1.ToString();
-                                this.Altimeter_indicated_altitude_ft = checkThreshold_For_Dashboard_vars(Altimeter_indicated_altitude_ft);
+                                this.Altimeter_indicated_altitude_ft = CheckThreshold_For_Dashboard_vars(Altimeter_indicated_altitude_ft);
                             }
                             else
                             {
@@ -554,8 +554,8 @@ namespace FlightSimulatorApp.Model
                                 Console.WriteLine("there has been an error in parsing proccess of the variable " + this.Altimeter_indicated_altitude_ft + " from simulator");
                             }
 
-                            _telnetClient.write("get /position/latitude-deg\n");
-                            if (Double.TryParse(_telnetClient.read(this.latitude_deg).ToString(), out temp))
+                            _telnetClient.Write("get /position/latitude-deg\n");
+                            if (Double.TryParse(_telnetClient.Read(this.latitude_deg).ToString(), out temp))
                             {
                                 this.Latitude_deg = temp.ToString();
                             }
@@ -566,8 +566,8 @@ namespace FlightSimulatorApp.Model
                                    + " from simulator, the default is set to 0");
                             }
 
-                            _telnetClient.write("get /position/longitude-deg\n");
-                            if (Double.TryParse(_telnetClient.read(this.longitude_deg).ToString(), out temp))
+                            _telnetClient.Write("get /position/longitude-deg\n");
+                            if (Double.TryParse(_telnetClient.Read(this.longitude_deg).ToString(), out temp))
                             {
                                 this.Longitude_deg = temp.ToString();
                             }
@@ -585,9 +585,9 @@ namespace FlightSimulatorApp.Model
                         {
                             m.ReleaseMutex();
                             Console.WriteLine("an unexpected problem as occured");
-                            if (this._telnetClient.checkConnectionStatus())
+                            if (this._telnetClient.CheckConnectionStatus())
                             {
-                                disconnect();
+                                Disconnect();
                                 // We need to click on the disconnect button.
                                 Console.WriteLine("client has Disconnected from Server due to Connection problem with Server.");
                             }
@@ -597,7 +597,7 @@ namespace FlightSimulatorApp.Model
                 }
             }).Start();
         }
-        private void start2()
+        private void Start2()
         {
             new Thread(delegate ()
             {
@@ -612,8 +612,8 @@ namespace FlightSimulatorApp.Model
                             while (commandsToSendToSimulator.Count != 0)
                             {
                                 curCommand = commandsToSendToSimulator.Dequeue();
-                                _telnetClient.write(curCommand);
-                                _telnetClient.read("");
+                                _telnetClient.Write(curCommand);
+                                _telnetClient.Read("");
                             }
                         }
                         m.ReleaseMutex();
@@ -625,11 +625,11 @@ namespace FlightSimulatorApp.Model
                 }
             }).Start();
         }
-        public void addQueue(string Command)
+        public void AddQueue(string Command)
         {
             this.commandsToSendToSimulator.Enqueue(Command);
         }
-        public void restorebackTo()
+        public void RestorebackTo()
         { // This function restores the value to default value "ERR", in case the client is disconnected from simulator.
             Indicated_heading_deg = "####";
             Gps_indicated_vertical_speed = "####";

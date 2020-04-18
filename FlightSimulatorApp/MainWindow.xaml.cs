@@ -51,7 +51,7 @@ namespace FlightSimulatorApp
         {
             joystick.Aileron_value.Value = 0;
             joystick.Throttle_value.Value = 0;
-            vm.disconnect();
+            vm.Disconnect();
         }
 
         private void dashboard_Loaded(object sender, RoutedEventArgs e)

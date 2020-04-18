@@ -8,10 +8,10 @@ namespace FlightSimulatorApp.Model
 {
     public interface ItelnetClient
     {
-        void connect(string ip, int port);
-        void write(string command);
-        string read(string value);
-        void disconnect();
-        bool checkConnectionStatus();
+        void Connect(string ip, int port);
+        void Write(string command);
+        string Read(string value);
+        void Disconnect();
+        bool CheckConnectionStatus();
     }
 }

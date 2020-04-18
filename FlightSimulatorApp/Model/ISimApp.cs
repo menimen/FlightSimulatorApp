@@ -24,15 +24,15 @@ namespace FlightSimulatorApp.Model
         string Longitude_deg { get; set; }
         string Locations { get; set; }
         void FlyPlane(double elevator, double rudder);
-        void moveThrottle(double throttle);
-        void moveAileron(string aileron);
-        void connect(string ip, int port);
-        void disconnect();
-        void start();
+        void MoveThrottle(double throttle);
+        void MoveAileron(string aileron);
+        void Connect(string ip, int port);
+        void Disconnect();
+        void Start();
         string ConnectionStatus { get; set; }
         bool IsConnected { get; set; }
         bool IsDisconnected { get; set; }
-        void addQueue(string Command);
+        void AddQueue(string Command);
 
     }
 }

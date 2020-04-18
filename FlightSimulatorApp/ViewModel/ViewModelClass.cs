@@ -27,9 +27,9 @@ namespace FlightSimulatorApp.ViewModel
         public bool VM_IsConnected => model.IsConnected;
         public bool VM_IsDisconnected => model.IsDisconnected;
 
-        internal void disconnect()
+        internal void Disconnect()
         {
-            model.disconnect();
+            model.Disconnect();
         }
 
         /********************************* Related to dashboard.*/
@@ -42,9 +42,9 @@ namespace FlightSimulatorApp.ViewModel
             };
         }
 
-        internal void connect(string ip, int port)
+        internal void Connect(string ip, int port)
         {
-            this.model.connect(ip, port);
+            this.model.Connect(ip, port);
         }
 
         public string VM_Indicated_heading_deg
@@ -88,13 +88,13 @@ namespace FlightSimulatorApp.ViewModel
                 VM_aileron = value;
                 if (this.VM_ConnectionStatus == "Connected")
                 {
-                    model.addQueue("set /controls/flight/aileron " + VM_aileron.ToString() + "\n");
+                    model.AddQueue("set /controls/flight/aileron " + VM_aileron.ToString() + "\n");
                 }
             }
         }
         public void moveAileron(string val)
         {
-            this.model.moveAileron(val);
+            this.model.MoveAileron(val);
         }
         private double VM_throttle;
         public double VM_Throttle
@@ -108,15 +108,15 @@ namespace FlightSimulatorApp.ViewModel
                 VM_throttle = value;
                 if (this.VM_ConnectionStatus == "Connected")
                 {
-                    model.addQueue("set /controls/engines/current-engine/throttle " + VM_throttle.ToString() + "\n");
+                    model.AddQueue("set /controls/engines/current-engine/throttle " + VM_throttle.ToString() + "\n");
                 }
             }
         }
         public void FlyPlane(double rudder, double elevator)
         {
             //model.FlyPlane(rudder, elevator);
-            model.addQueue("set /controls/flight/elevator " + elevator.ToString() + "\n");
-            model.addQueue("set /controls/flight/rudder " + rudder.ToString() + "\n");
+            model.AddQueue("set /controls/flight/elevator " + elevator.ToString() + "\n");
+            model.AddQueue("set /controls/flight/rudder " + rudder.ToString() + "\n");
         }
 
         /*****************************************/
