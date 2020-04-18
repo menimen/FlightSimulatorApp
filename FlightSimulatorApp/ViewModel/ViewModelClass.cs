@@ -92,10 +92,7 @@ namespace FlightSimulatorApp.ViewModel
                 }
             }
         }
-        public void moveAileron(string val)
-        {
-            this.model.MoveAileron(val);
-        }
+       
         private double VM_throttle;
         public double VM_Throttle
         {
@@ -114,6 +111,10 @@ namespace FlightSimulatorApp.ViewModel
         }
         public void FlyPlane(double rudder, double elevator)
         {
+            if (rudder == 1)
+            {
+                Console.WriteLine("yagay");
+            }
             //model.FlyPlane(rudder, elevator);
             model.AddQueue("set /controls/flight/elevator " + elevator.ToString() + "\n");
             model.AddQueue("set /controls/flight/rudder " + rudder.ToString() + "\n");
